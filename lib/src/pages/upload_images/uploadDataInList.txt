@@ -1,0 +1,71 @@
+if(uploadPath.isNotEmpty) {
+        DocumentReference docRef = await firestoreRef.collection(collectionName).doc(getCurrentUserUid());
+        DocumentSnapshot docSnap = await docRef.get();
+        final data = docSnap.data() as Map<dynamic, dynamic>;
+        print(data);
+        print("data.containsKey('dogName') : ${data.containsKey('dogName')}");
+        print("at first time data.containsKey('myMap') : ${data.containsKey('myMap')}");
+         if (data.containsKey('dogName')) {
+           // อ่านข้อมูลที่มีอยู่จาก Firestore
+           DocumentSnapshot userSnapshot = await FirebaseFirestore.instance.collection('users').doc(getCurrentUserUid()).get();
+           List<String> dogName = List<String>.from(userSnapshot['dogName']);
+           dogName.add(dogNameController.text.toString());
+           List<String> dogAge = List<String>.from(userSnapshot['dogAge']);
+           dogAge.add(dogAgeController.text.toString());
+           List<String> dogSpecies = List<String>.from(userSnapshot['dogSpecies']);
+           dogSpecies.add(dogSpeciesController.text.toString());
+           List<String> dogGender = List<String>.from(userSnapshot['dogGender']);
+           dogGender.add(dogGenderController.text.toString());
+           List<String> dogDescription = List<String>.from(userSnapshot['dogDescription']);
+           dogDescription.add(descriptionController.text.toString());
+           List<String> image = List<String>.from(userSnapshot['image']);
+           image.add(uploadPath);
+            print("data['dogName'] : ${data['dogName']}");
+            print("dogNameController.text : ${dogNameController.text.toString()}");
+            print("dogName : ${dogName}");
+            await FirebaseFirestore.instance.collection('users').doc(getCurrentUserUid()).update({
+               'dogName': dogName,
+               'dogAge': dogAge,
+               'dogSpecies': dogSpecies,
+               'dogGender': dogGender,
+               'dogDescription': dogDescription,
+               'image' : image
+             }).then((value) {
+               print('Map field updated successfully!');
+             }).catchError((error) {
+               print('Error updating map field: $error');
+             });
+
+           } else {
+             FirebaseFirestore.instance.collection('users').doc(getCurrentUserUid()).update({
+               'dogName' : [dogNameController.text],
+               'dogAge' : [dogAgeController.text],
+               'dogSpecies' : [dogSpeciesController.text],
+               'dogGender' : [dogGenderController.text],
+               'dogDescription' : [descriptionController.text],
+               'image' : [uploadPath]
+             }).then((value) {
+               print('Map field updated successfully!');
+             }).catchError((error) {
+               print('Error updating map field: $error');
+             });
+           }
+
+        // ทำการอัปเดตค่าใน Firestore
+        // FirebaseFirestore.instance.collection('users').doc(getCurrentUserUid()).update({
+        //   'myMap': myMap
+        // }).then((value) {
+        //   print('Map field updated successfully!');
+        // }).catchError((error) {
+        //   print('Error updating map field: $error');
+        // });
+
+
+      } else {
+        _showMessage("Something While Uploading Image.");
+      }
+      setState(() {
+        _isLoading = false;
+      });
+    });
+  }
