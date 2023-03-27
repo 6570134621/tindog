@@ -2,16 +2,11 @@
 
 A new Flutter project.
 
-## Getting Started
+## V1.0.0
+รายละเอียด : เป็นการอัพโหลดโค้ดทั้งหมดลงใน github ครั้งแรก ในเวอร์ชั่นนี้ feature ที่สามารถใช้งานได้แก่ การสมัครสมาชิก(ชื่อ อายุ เพศ อีเมล์ อาชีพ) การอัพโหลดรูปภาพสุนัขพร้อมรายละเอียดจาก cloud firebase (ชื่อ อายุ สายพันธ์ุ เพศ คำอธิบายประกอบ) และการอัพโหลดรูปภาพ แก้ไข delete โดยใช้ Node.js จัดการเรื่อง API (มีแฟมเวิร์คเป็น express) 
+error : มีการแสดง Null check operator used on a null value ตรงบริเวณ drawer เมื่อเปิดแอพขึ้นมา เพราะยังไม่ได้ logout ID เก่า
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# tindog
+## V1.0.0
+รายละเอียด : แก้บัคตรง drawer เมื่อมีเปิดแอพโดยที่ยังไม่ได้ log in ทำให้ไม่มีข้อมูลส่งมาจาก firebase
+snapshot.data?.data() == null
+FirebaseFirestore.instance.collection('users').doc(user!.uid).get(), ตรงจุดนี้คือสาเหตุ เพราะเกิด check null
