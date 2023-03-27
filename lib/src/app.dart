@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tindog/src/config/route.dart' as custom_route;
@@ -7,6 +9,8 @@ import 'package:tindog/src/pages/login/login_page.dart';
 
 
 class MyApp extends StatelessWidget {
+  User? user = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,15 +21,15 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       // home: HomePage(),
-      home: FutureBuilder<SharedPreferences>(
-        future: SharedPreferences.getInstance(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final token = snapshot.data?.getString(Setting.TOKEN_PREF) ?? '';
-            if (token.isNotEmpty) {
+      home: FutureBuilder<DocumentSnapshot<Object?>>(
+        future: FirebaseFirestore.instance.collection('users').doc(user?.uid).get(),
+        builder: (context,AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done){
+            if (snapshot.hasData && snapshot.data?.data() != null){
               return HomePage();
+            } else {
+              return LoginPage();
             }
-            return LoginPage();
           }
           return SizedBox();
         },

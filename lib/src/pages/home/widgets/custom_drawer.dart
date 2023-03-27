@@ -16,6 +16,7 @@ class CustomDrawer extends StatefulWidget {
 
 class _CustomDrawerState extends State<CustomDrawer> {
   FirebaseFirestore firestoreRef = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
   User? user = FirebaseAuth.instance.currentUser;
   String collectionName = "users";
   List<String> docIDs = [];
@@ -24,22 +25,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
     return Drawer(
       child: Column(
         children: [
-          FutureBuilder<DocumentSnapshot>(
-            future: firestoreRef.collection('users').doc(user!.uid).get(),
-              builder: (context,AsyncSnapshot<DocumentSnapshot> snapshot){
 
-              if (snapshot.hasData){
-                final dataItem = snapshot.data!.data() as Map<String, dynamic>;
-                return UserAccountsDrawerHeader(
-                  accountName: Text(dataItem?["Name"]),
-                  accountEmail: Text(dataItem?["Email"]),
-                  currentAccountPicture: CircleAvatar(backgroundImage: AssetImage('assets/images/JohnWick.png'),),
-                );
-              } else if (snapshot.hasError) {
-                return Text("Error: ${snapshot.error}");
-              }
-              return CircularProgressIndicator();
-              }),
+            _buildUserProfile(),
+          // ต้องมีการ return widget ใดก็ตามเพื่อเตรียมสร้างหน้าจอใหม่
           ..._buildMainMenu(),
           Spacer(),
           ListTile(
@@ -54,6 +42,28 @@ class _CustomDrawerState extends State<CustomDrawer> {
         ],
       ),
     );
+  }
+
+  FutureBuilder<DocumentSnapshot<Object?>> _buildUserProfile() {
+    return FutureBuilder<DocumentSnapshot>(
+          future: firestoreRef.collection('users').doc(user?.uid).get(),
+            builder: (context,AsyncSnapshot<DocumentSnapshot> snapshot){
+            if (snapshot.connectionState == ConnectionState.done){
+              if (snapshot.hasData && snapshot.data?.data() != null) {
+                final dataItem = snapshot.data?.data() as Map<String, dynamic>;
+                return UserAccountsDrawerHeader(
+                  accountName: Text(dataItem["Name"] != null ? dataItem["Name"] : Container()),
+                  accountEmail: Text(dataItem["Email"] != null ? dataItem["Name"] : Container()),
+                  currentAccountPicture: CircleAvatar(backgroundImage: AssetImage('assets/images/JohnWick.png'),),
+                );
+              } else {
+                Navigator.pushReplacementNamed(context, custom_route.Route.login);
+                return Container(); // ต้องมีการ return widget ใดก็ตามเพื่อเตรียมสร้างหน้าจอใหม่
+              }
+            } else {
+              return CircularProgressIndicator();
+            }
+            });
   }
 
   void showDialogLogOut() {
