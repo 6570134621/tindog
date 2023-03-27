@@ -7,6 +7,6 @@ A new Flutter project.
 error : มีการแสดง Null check operator used on a null value ตรงบริเวณ drawer เมื่อเปิดแอพขึ้นมา เพราะยังไม่ได้ logout ID เก่า
 
 ## V1.0.0
-รายละเอียด : แก้บัคตรง drawer เมื่อมีเปิดแอพโดยที่ยังไม่ได้ log in ทำให้ไม่มีข้อมูลส่งมาจาก firebase
-snapshot.data?.data() == null
+รายละเอียด : แก้บัคตรง drawer เมื่อมีเปิดแอพโดยที่ยังไม่ได้ log in ทำให้ไม่มีข้อมูลส่งมาจาก firebase <br>
+snapshot.data?.data() == null <br>
 FirebaseFirestore.instance.collection('users').doc(user!.uid).get(), ตรงจุดนี้คือสาเหตุ เพราะเกิด check null
