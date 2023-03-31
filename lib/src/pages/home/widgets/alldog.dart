@@ -104,6 +104,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tindog/src/bloc/species/species_bloc.dart';
 
 class Dog {
   final String name;
@@ -179,87 +181,108 @@ class _DogGridState extends State<DogGrid> {
       body: Column(
         children: [
           Expanded(
-              child: FutureBuilder<QuerySnapshot>(
-                future: firestoreRef.collection(collectionName).get(),
-                builder: (context, snapshot) {
-                  print("print snapshot.hasData : ${snapshot.hasData}");
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasData && snapshot.data!.docs.length > 0) {
-                    List<DocumentSnapshot> arrData = snapshot.data!.docs;
-                    // สร้าง List ที่จะเก็บข้อมูลที่คุณต้องการแสดง
-                    List<Map<String, dynamic>> allPhotoData = [];
-                    print("arrData = ${arrData}");
-                    // วนลูปเพื่อดึงข้อมูลจากทุก id
-                    for (var doc in arrData) {
-
-                      if (doc.get('photo') != null){
-                        print("name of user : ${doc['Name']}");
-                        Map<String, dynamic> photoData = doc['photo']; // ได้ข้อมูลรูปทั้งหมดของแต่ละ user
-                        for (var photoKey in photoData.keys) {
-                          allPhotoData.add(photoData[photoKey]);
-                          print('allPhotoData : ${allPhotoData}');
-                        }
-                      }
-                    }
-
-                    print("ข้อมูลใน allPhotoData : ${allPhotoData}");
-
-                    print("print arrData.length : ${arrData.length}");
-                    //print(arrData[0]['photo']['0']['dogName']);
-                    return ListView.builder(
-                      itemCount: allPhotoData.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: Row(
-                            children: [
-                              Image.network(allPhotoData[index]['image'],
-                              //Image.network('https://firebasestorage.googleapis.com/v0/b/tindog-405fa.appspot.com/o/users%2F1679503260575.jpg?alt=media&token=bbb7f3b5-7c6f-41cf-9973-7974714ab251',
-                              height: 120,
-                              width: 135,
-                              fit: BoxFit.fill,
-                                loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) {
-                                  return child;
-                                } else {
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes! : null
-                                    ),
-                                  );
-                                }
-                                },
-                              ),
-                              SizedBox(width: 15,),
-                              Container(
-                                child: Column(
-                                  children: [
-                                    //Text(arrData[index]['photo'][index.toString()]['dogName']),
-                                    Text(allPhotoData[index]['dogName']),
-                                    Text(allPhotoData[index]['dogGender']),
-                                    Text(allPhotoData[index]['dogSpecies']),
-                                    Text(allPhotoData[index]['dogAge']),
-                                    // Text(arrData[index]['photo'][index.toString()]['dogGender']),
-                                    // Text(arrData[index]['photo'][index.toString()]['dogSpecies']),
-                                    // Text(arrData[index]['photo'][index.toString()]['dogAge']),
-                                    //
-                                     Text(allPhotoData[index]['dogDescription'].length > 15 ? allPhotoData[index]['dogDescription'].substring(0,15) + '...' :
-                                     allPhotoData[index]['dogDescription']),
-
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
+              child: BlocBuilder<SpeciesBloc, SpeciesState>(
+                builder: (context, state) {
+                  return FutureBuilder<QuerySnapshot>(
+                    future: firestoreRef.collection(collectionName).get(),
+                    builder: (context, snapshot) {
+                      print("state.species :::: ${state.species}");
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator(),
                         );
+                      } else if (snapshot.hasData && snapshot.data!.docs.length > 0) {
+                        List<DocumentSnapshot> arrData = snapshot.data!.docs;
+                        // สร้าง List ที่จะเก็บข้อมูลที่คุณต้องการแสดง
+                        List<Map<String, dynamic>> allPhotoData = [];
+
+                        // วนลูปเพื่อดึงข้อมูลจากทุก id
+                        for (var doc in arrData) {
+
+                          if (doc.get('photo') != null){
+
+                            Map<String, dynamic> photoData = doc['photo']; // ได้ข้อมูลรูปทั้งหมดของแต่ละ user
+                            for (var photoKey in photoData.keys) {
+                              //print("photoData[photoKey] : ${photoData[photoKey]['dogSpecies']}");
+                              if(photoData[photoKey]['dogSpecies'] == state.species) {
+
+                                allPhotoData.add(photoData[photoKey]);
+                              } else if(state.species == 'All'){
+                                allPhotoData.add(photoData[photoKey]);
+                              }
+                            }
+                          }
+                        }
+
+                        //print(arrData[0]['photo']['0']['dogName']);
+                        return ListView.builder(
+                            itemCount: allPhotoData.length,
+                            itemBuilder: (context, index) {
+                              print("state.species ก่อนเข้า if:::: ${state.species}");
+                              //if (state.species == 'All' || allPhotoData[index]['dogSpecies'] == state.species) {
+                                print("state.species :::: ${state.species}");
+                                return Card(
+                                  child: Row(
+                                    children: [
+                                      Image.network(
+                                        allPhotoData[index]['image'],
+                                        //Image.network('https://firebasestorage.googleapis.com/v0/b/tindog-405fa.appspot.com/o/users%2F1679503260575.jpg?alt=media&token=bbb7f3b5-7c6f-41cf-9973-7974714ab251',
+                                        height: 120,
+                                        width: 135,
+                                        fit: BoxFit.fill,
+                                        loadingBuilder: (context, child,
+                                            loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          } else {
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                  value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                      null
+                                                      ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
+                                                      : null
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                      SizedBox(width: 15,),
+                                      Container(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                                allPhotoData[index]['dogName']),
+                                            Text(
+                                                allPhotoData[index]['dogGender']),
+                                            Text(
+                                                allPhotoData[index]['dogSpecies']),
+                                            Text(allPhotoData[index]['dogAge']),
+                                            Text(
+                                                allPhotoData[index]['dogDescription']
+                                                    .length > 15
+                                                    ? allPhotoData[index]['dogDescription']
+                                                    .substring(0, 15) + '...'
+                                                    :
+                                                allPhotoData[index]['dogDescription']),
+
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                             // }
+                            }
+                        );
+
                       }
-                    );
-                        
-                  }
-                  return Center(child: CircularProgressIndicator());
-                },
+                      return Center(child: CircularProgressIndicator());
+                    },
+                  );
+                }
               )
           )
         ],
