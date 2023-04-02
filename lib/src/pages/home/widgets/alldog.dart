@@ -101,10 +101,13 @@
 //     );
 //   }
 // }
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tindog/src/bloc/species/species_bloc.dart';
 
 class Dog {
@@ -177,6 +180,11 @@ class _DogGridState extends State<DogGrid> {
 
   @override
   Widget build(BuildContext context) {
+    String getRandomEmoji() {
+      List<String> emojis = ["🐾", "🐕", "🦮", "🐩", "🐶"];
+      int randomIndex = Random().nextInt(emojis.length);
+      return emojis[randomIndex];
+    }
     return Scaffold(
       body: Column(
         children: [
@@ -184,6 +192,7 @@ class _DogGridState extends State<DogGrid> {
               child: BlocBuilder<SpeciesBloc, SpeciesState>(
                 builder: (context, state) {
                   return FutureBuilder<QuerySnapshot>(
+
                     future: firestoreRef.collection(collectionName).get(),
                     builder: (context, snapshot) {
                       print("state.species :::: ${state.species}");
@@ -221,60 +230,125 @@ class _DogGridState extends State<DogGrid> {
                               //if (state.species == 'All' || allPhotoData[index]['dogSpecies'] == state.species) {
                                 print("state.species :::: ${state.species}");
                                 return Card(
-                                  child: Row(
-                                    children: [
-                                      Image.network(
-                                        allPhotoData[index]['image'],
-                                        //Image.network('https://firebasestorage.googleapis.com/v0/b/tindog-405fa.appspot.com/o/users%2F1679503260575.jpg?alt=media&token=bbb7f3b5-7c6f-41cf-9973-7974714ab251',
-                                        height: 120,
-                                        width: 135,
-                                        fit: BoxFit.fill,
-                                        loadingBuilder: (context, child,
-                                            loadingProgress) {
-                                          if (loadingProgress == null) {
-                                            return child;
-                                          } else {
-                                            return Center(
-                                              child: CircularProgressIndicator(
-                                                  value: loadingProgress
-                                                      .expectedTotalBytes !=
-                                                      null
-                                                      ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                      loadingProgress
-                                                          .expectedTotalBytes!
-                                                      : null
-                                              ),
-                                            );
-                                          }
-                                        },
-                                      ),
-                                      SizedBox(width: 15,),
-                                      Container(
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                                allPhotoData[index]['dogName']),
-                                            Text(
-                                                allPhotoData[index]['dogGender']),
-                                            Text(
-                                                allPhotoData[index]['dogSpecies']),
-                                            Text(allPhotoData[index]['dogAge']),
-                                            Text(
-                                                allPhotoData[index]['dogDescription']
-                                                    .length > 15
-                                                    ? allPhotoData[index]['dogDescription']
-                                                    .substring(0, 15) + '...'
-                                                    :
-                                                allPhotoData[index]['dogDescription']),
-
-                                          ],
+                                  margin: EdgeInsets.all(8),
+                                  elevation: 4,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: Image.network(
+                                            allPhotoData[index]['image'],
+                                            height: 120,
+                                            width: 135,
+                                            fit: BoxFit.fill,
+                                            loadingBuilder: (context, child, loadingProgress) {
+                                              if (loadingProgress == null) {
+                                                return child;
+                                              } else {
+                                                return Center(
+                                                  child: CircularProgressIndicator(
+                                                    value: loadingProgress.expectedTotalBytes != null
+                                                        ? loadingProgress.cumulativeBytesLoaded /
+                                                        loadingProgress.expectedTotalBytes!
+                                                        : null,
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                          ),
                                         ),
-                                      )
-                                    ],
+                                        SizedBox(width: 15),
+                                        Expanded(
+                                          child: Container(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      WidgetSpan(child: Text("🏷️ : ", style: TextStyle(fontSize: 16))),
+                                                      TextSpan(
+                                                        text: "${allPhotoData[index]['dogName']} ",
+                                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                                      ),
+                                                      //TextSpan(text: getRandomEmoji()),
+                                                    ],
+                                                  ),
+                                                ),
+
+                                                SizedBox(height: 6),
+                                                Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      TextSpan(text: "Gender: "),
+                                                      TextSpan(
+                                                        text: allPhotoData[index]['dogGender'],
+                                                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                                                      ),
+                                                      WidgetSpan(
+                                                        child: allPhotoData[index]['dogGender'] == 'male'
+                                                            ? Icon(Icons.male, size: 14, color: Colors.grey[600])
+                                                            : Icon(Icons.female, size: 14, color: Colors.grey[600]),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+
+                                                SizedBox(height: 6),
+                                                Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      TextSpan(text: "Species: "),
+                                                      TextSpan(
+                                                        text: allPhotoData[index]['dogSpecies'],
+                                                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+
+                                                SizedBox(height: 6),
+                                                Text.rich(
+                                                    TextSpan(
+                                                      children : [
+                                                        TextSpan(text: "Age: "),
+                                                        TextSpan(
+                                                            text: allPhotoData[index]['dogAge'],
+                                                            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                                                        ),
+                                                      ]
+                                                    ),
+                                                ),
+                                                SizedBox(height: 6),
+                                                Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      TextSpan(text: "Info: "),
+                                                      TextSpan(
+                                                        text: allPhotoData[index]['dogDescription'].length > 30
+                                                            ? allPhotoData[index]['dogDescription'].substring(0, 30) + '...'
+                                                            : allPhotoData[index]['dogDescription'],
+                                                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 );
-                             // }
+
+                              // }
                             }
                         );
 

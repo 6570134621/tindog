@@ -5,6 +5,7 @@ class TextFieldWidget extends StatefulWidget {
   final String label;
   final String text;
   final ValueChanged<String> onChanged;
+  final TextEditingController controller;
 
   const TextFieldWidget({
     Key? key,
@@ -12,6 +13,7 @@ class TextFieldWidget extends StatefulWidget {
     required this.label,
     required this.text,
     required this.onChanged,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -24,19 +26,19 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
   @override
   void initState() {
     super.initState();
-
+    //controller = widget.controller ?? TextEditingController(text: widget.text);
     controller = TextEditingController(text: widget.text);
   }
+  // @override
+  // void dispose() {
+  //   controller.dispose();
+  //   super.dispose();
+  // }
 
   @override
-  void dispose() {
-    controller.dispose();
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => Column(
+  Widget build(BuildContext context) {
+    print("widget.controller : ${widget.controller}");
+    return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
@@ -45,7 +47,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
       ),
       const SizedBox(height: 8),
       TextField(
-        controller: controller,
+        controller: widget.controller..text = widget.text,
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
@@ -55,4 +57,5 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
       ),
     ],
   );
+  }
 }

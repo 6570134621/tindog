@@ -3,10 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:tindog/src/pages/chats/chats_page.dart';
 import 'package:tindog/src/pages/detailform/detail_form.dart';
 import 'package:tindog/src/pages/home/home_page.dart';
+import 'package:tindog/src/pages/home/widgets/ProfilePage.dart';
 import 'package:tindog/src/pages/login/login_page.dart';
 import 'package:tindog/src/pages/management/management_page.dart';
 import 'package:tindog/src/pages/mydog/mydog_page.dart';
-import 'package:tindog/src/pages/profile/profile_page.dart';
+import 'package:tindog/src/pages/home/widgets/edit_profile_page.dart';
 import 'package:tindog/src/pages/upload_images/upload_image_firebase.dart';
 
 
@@ -21,6 +22,8 @@ class Route{
   static const management = '/management';
   static const detailform = '/detailform';
   static const uploadimage = '/upload_images';
+  static const editpage = '/edit_page';
+
 
 
 
@@ -34,5 +37,6 @@ class Route{
     management : (context) => ManagementPage(),
     detailform : (context) => CreateProfile(),
     uploadimage : (context) => UploadsImage(),
+    editpage : (context) => EditProfilePage(),
   };
 }

@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:tindog/src/config/theme.dart' as custom_theme;
 
 import 'package:flutter/material.dart';
 
@@ -6,7 +6,6 @@ class ProfileWidget extends StatelessWidget {
   final String imagePath;
   final bool isEdit;
   final VoidCallback onClicked;
-
   const ProfileWidget({
     Key? key,
     required this.imagePath,
@@ -16,17 +15,16 @@ class ProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.primary;
-
+    final color = const Color(0xFF0089FF);
     return Center(
       child: Stack(
         children: [
           buildImage(),
           Positioned(
-            bottom: 0,
-            right: 4,
-            child: buildEditIcon(color),
-          ),
+              bottom: 0,
+              right: 4,
+              child: buildEditIcon(color)
+          )
         ],
       ),
     );
@@ -39,11 +37,11 @@ class ProfileWidget extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: Ink.image(
-          image: image,
-          fit: BoxFit.cover,
-          width: 128,
-          height: 128,
-          child: InkWell(onTap: onClicked),
+            image: image,
+            fit: BoxFit.cover,
+            width: 128,
+            height: 128,
+            child: InkWell(onTap: onClicked,),
         ),
       ),
     );
@@ -59,14 +57,13 @@ class ProfileWidget extends StatelessWidget {
         isEdit ? Icons.add_a_photo : Icons.edit,
         color: Colors.white,
         size: 20,
-      ),
-    ),
+        )
+      )
   );
-
   Widget buildCircle({
-    required Widget child,
-    required double all,
-    required Color color,
+  required Widget child,
+  required double all,
+  required Color color,
   }) =>
       ClipOval(
         child: Container(
