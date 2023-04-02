@@ -10,3 +10,6 @@ error : มีการแสดง Null check operator used on a null value ต
 รายละเอียด : แก้บัคตรง drawer เมื่อมีเปิดแอพโดยที่ยังไม่ได้ log in ทำให้ไม่มีข้อมูลส่งมาจาก firebase <br>
 snapshot.data?.data() == null <br>
 FirebaseFirestore.instance.collection('users').doc(user!.uid).get(), ตรงจุดนี้คือสาเหตุ เพราะเกิด check null
+
+## V1.0.4
+รายละเอียด : เพิ่ม feature ที่สามารถแสดงเฉพาะสายพันธุ์ของสุนัขได้ในหน้า home โดยเป็น dropdown menu ลงมา และเพิ่มหน้า profile ให้แสดงผลข้อมูลจาก firebase โดยสามารถ edit ได้
