@@ -23,7 +23,7 @@ class MenuViewModel {
     Menu(
       'Profile',
       icon: FontAwesomeIcons.users,
-      iconColor: Colors.deepOrange,
+      iconColor: Colors.blueGrey,
       onTap: (context) {
         Navigator.pushNamed(context, custom_route.Route.profile);
       },
@@ -31,26 +31,28 @@ class MenuViewModel {
     Menu(
       'MyDog',
       icon: FontAwesomeIcons.dog,
-      iconColor: Colors.green,
+      iconColor: Colors.blueGrey,
       onTap: (context) {
-        Navigator.pushNamed(context, custom_route.Route.mydog);
+        //Navigator.pushNamed(context, custom_route.Route.mydog);
+        Navigator.pushNamed(context, custom_route.Route.mydogFirebase);
+
       },
     ),
     Menu(
-      'Inbox',
-      icon: FontAwesomeIcons.inbox,
-      iconColor: Colors.amber,
-      onTap: (context) {
-        Navigator.pushNamed(context, custom_route.Route.chats);
-      },
-    ),
-    Menu(
-      'Upload Image From Firebase',
-      icon: FontAwesomeIcons.google,
+      "Upload Dog Image ",
+      icon: FontAwesomeIcons.upload,
       iconColor: Colors.blueGrey,
       onTap: (context) {
       Navigator.pushNamed(context, custom_route.Route.uploadimage);
       },
-    )
+    ),
+    Menu(
+      'coming soon..',
+      icon: FontAwesomeIcons.inbox,
+      iconColor: Colors.black12,
+      onTap: (context) {
+        // Navigator.pushNamed(context, custom_route.Route.chats);
+      },
+    ),
   ];
 }

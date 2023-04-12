@@ -96,7 +96,9 @@
 //     );
 //   }
 // }
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tindog/src/models/product.dart';
@@ -112,6 +114,15 @@ class AllDog extends StatefulWidget {
 
 class _AllDogState extends State<AllDog> {
   final _spacing = 4.0;
+  FirebaseFirestore firestoreRef = FirebaseFirestore.instance;
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+  Future<QuerySnapshot> getUserData() {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: uid)
+        .get();
+  }
 
   @override
   Widget build(BuildContext context) {

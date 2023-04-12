@@ -24,7 +24,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: TextTheme(
+            headline1: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
+          )
         ),
+
         // home: HomePage(),
         home: FutureBuilder<DocumentSnapshot<Object?>>(
           future: FirebaseFirestore.instance.collection('users')

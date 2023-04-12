@@ -12,43 +12,35 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
-      fit: StackFit.expand,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            gradient: custom_theme.Theme.gradient,
-          ),
-        ),
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 100,),
-              Header(),
-              SizedBox(height: 10,),
-              LoginForm(),
-              SizedBox(
-                height: 30,
+          fit: StackFit.expand,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+              gradient: custom_theme.Theme.gradient,
               ),
-              // _buildFlatButton(
-              //     "Forgot Password ?",
-              //     onPressed: () {
-              //       // todo
-              //     },
-              // ),
-              SizedBox(height: 10,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            ),
+            SingleChildScrollView(
+              child: Column(
                 children: [
-                  TextButton(onPressed: (){
-                    Navigator.pushNamed(context, custom_route.Route.detailform);
-                  }, child: Row(
-                    children: [
-                      FaIcon(FontAwesomeIcons.userPlus, color: Colors.white),
-                      SizedBox(width: 10,),
-                      Text("Sign Up", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500, color: Colors.white),)
-                    ],
-                  ))
-                ],
+                SizedBox(height: 100,),
+                Header(),
+                SizedBox(height: 10,),
+                LoginForm(),
+                SizedBox(height: 30,),
+                SizedBox(height: 10,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    TextButton(onPressed: (){
+                      Navigator.pushNamed(context, custom_route.Route.detailform);
+                    }, child: Row(
+                      children: [
+                        FaIcon(FontAwesomeIcons.userPlus, color: Colors.white),
+                        SizedBox(width: 10,),
+                        Text("Sign Up", style: Theme.of(context).textTheme.headline1,)
+                        ],
+                      ))],
               )
             ],
           ),

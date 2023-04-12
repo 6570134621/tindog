@@ -2,13 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class NumbersWidget extends StatelessWidget {
+class NumbersWidget extends StatefulWidget {
+  final String uid;
+  const NumbersWidget({ required this.uid});
+  @override
+  State<NumbersWidget> createState() => _NumbersWidgetState();
+}
 
+class _NumbersWidgetState extends State<NumbersWidget> {
+  int count_ready = 0;
+  int count_unavailable = 0;
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     Future<QuerySnapshot> getUserData() {
-      return FirebaseFirestore.instance.collection('users').where('uid', isEqualTo: uid).get();
+      return FirebaseFirestore.instance.collection('users').where('uid', isEqualTo: widget.uid).get();
     }
     return FutureBuilder<QuerySnapshot>(
         future: getUserData(),
@@ -17,16 +25,22 @@ class NumbersWidget extends StatelessWidget {
             return Center(child: CircularProgressIndicator(),);
           } else if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = snapshot.data!.docs.first.data() as Map<String, dynamic>;
-            print("data['photo'] : ${data['photo']}");
-            print("data['photo'].length : ${data['photo'].length}");
+            data['photo'].forEach((key, value){
+              print("${value['dogStatus']}");
+              if (value['dogStatus'] == 'ready_to_breed'){
+                count_ready += 1;
+              } else if (value['dogStatus'] == 'unavailable') {
+                count_unavailable += 1;
+              }
+            });
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 buildButton(context, data['photo'].length.toString(), 'Total dogs'),
                 buildDivider(),
-                buildButton(context, 'null', 'Active dogs'),
+                buildButton(context, count_ready.toString() , 'Active dogs'),
                 buildDivider(),
-                buildButton(context, '4.7', 'Rating'),
+                buildButton(context, count_unavailable.toString() , 'Unavailable'),
               ],
             );
           }
@@ -34,6 +48,7 @@ class NumbersWidget extends StatelessWidget {
         }
     );
   }
+
   Widget buildDivider() => Container(
     height: 24,
     child: VerticalDivider(),

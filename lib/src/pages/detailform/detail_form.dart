@@ -18,8 +18,8 @@ class _CreateProfileState extends State<CreateProfile> {
   final _emailController = TextEditingController();
   final _jobController = TextEditingController();
   final _telController = TextEditingController();
-  //final _bioController = TextEditingController();
 
+  String? _selectedStatus;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

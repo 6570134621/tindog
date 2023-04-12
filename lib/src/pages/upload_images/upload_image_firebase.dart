@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:faker/faker.dart';
 
@@ -16,6 +18,21 @@ class UploadsImage extends StatefulWidget {
 }
 
 class _UploadsImageState extends State<UploadsImage> {
+  Future<List<String>> getBreed() async {
+    String contents = await rootBundle.loadString('assets/model/my_labels_breeds.txt');
+
+    List<String> breedList = [];
+
+    for (var line in LineSplitter().convert(contents)) {
+      // แปลงเป็นตัวพิมพ์เล็กและแทนที่ _ ด้วยช่องว่าง
+      final breedName = line.toLowerCase().replaceAll('_', ' ');
+      breedList.add(breedName);
+    }
+    return breedList;
+
+  }
+  List<String> _breedList = [];
+
   // document IDs
   List<String> docIDs = [];
   String imageName = "";
@@ -26,6 +43,9 @@ class _UploadsImageState extends State<UploadsImage> {
   var dogAgeController = new TextEditingController();
   var dogSpeciesController = new TextEditingController();
   var dogGenderController = new TextEditingController();
+  var addressController = new TextEditingController();
+  String? _selectedStatus;
+  String? _breed;
   //var dogGenderController = new TextEditingController();
   FirebaseFirestore firestoreRef = FirebaseFirestore.instance;
   // firestoreRef ใช้เข้าถึง Firestore ในโปรเจ็กต์ปัจจุบัน ใช้ในการเข้าถึงเอกสารและคอลเล็กชันใน Firestore
@@ -33,18 +53,33 @@ class _UploadsImageState extends State<UploadsImage> {
   String collectionName = "users";
   bool _isLoading = false;
   @override
+
+  @override
+  void initState() {
+    super.initState();
+
+    getBreed().then((breeds) {
+      breeds.insertAll(0, ['bulldog','pitbull','shiba']);
+      setState(() {
+        _breedList = breeds;
+      });
+    });
+  }
+
   Widget build(BuildContext context) {
+    print('_breedList = breeds : ${_breedList}');
     return Scaffold(
+      backgroundColor: Color(0xFFFFEFD6),
       appBar: AppBar(
-        backgroundColor: Color(0xFF6C5DD3),
+        backgroundColor: Color(0xFF3A8891),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xFF4A4E69),
-                Color(0xFF6C5DD3),
+                Color(0xFF0E5E6F),
+                Color(0xFF3A8891),
               ],
             ),
           ),
@@ -55,58 +90,158 @@ class _UploadsImageState extends State<UploadsImage> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: _isLoading ?
-          Center(child: CircularProgressIndicator()) : Column(
-            children: [
-              imageName == "" ? Container() : Text("${imageName}"),
-              OutlinedButton(onPressed: (){
-                imagePicker();
-              }, child: Text("Select Image")),
-              SizedBox(height: 12,),
-              TextFormField(
-                controller: dogNameController,
-                decoration: InputDecoration(
-                    labelText: "Dog Name", border: OutlineInputBorder()
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(18, 20, 18, 10),
+            child: _isLoading ?
+            Center(child: CircularProgressIndicator()) : Container(
+              child: Padding(
+                padding: const EdgeInsets.all(14.0),
+                child: Column(
+                  children: [
+                    imageName == "" ? Container() : Text("${imageName}"),
+                    OutlinedButton(onPressed: (){
+                      imagePicker();
+                    }, child: Text("Select Image")),
+                    SizedBox(height: 12,),
+                    TextFormField(
+                      controller: dogNameController,
+                      decoration: InputDecoration(
+                          labelText: "Dog Name", border: OutlineInputBorder()
+                      ),
+                    ),
+                    SizedBox(height: 12,),
+                    TextFormField(
+                      controller: dogAgeController,
+                      decoration: InputDecoration(
+                          labelText: "Age", border: OutlineInputBorder()
+                      ),
+                    ),
+                    SizedBox(height: 12,),
+                    TextFormField(
+                      controller: dogGenderController,
+                      decoration: InputDecoration(
+                          labelText: "Gender", border: OutlineInputBorder()
+                      ),
+                    ),
+                    SizedBox(height: 12,),
+                    TextFormField(
+                      controller: addressController,
+                      decoration: InputDecoration(
+                          labelText: "Address", border: OutlineInputBorder()
+                      ),
+                    ),
+                    SizedBox(height: 12,),
+                    TextFormField(
+                      controller: descriptionController,
+                      minLines: 3,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        labelText: "Description", border: OutlineInputBorder()
+                      ),
+                    ),
+                    SizedBox(height: 8,),
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFFF2DEBA),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          DropdownButton<String>(
+                            dropdownColor: Color(0xFFF2DEBA),
+                            value: _selectedStatus,
+                            items: [
+                              DropdownMenuItem<String>(
+                                child: Text(
+                                  'Ready to breed  🟢',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                value: 'ready_to_breed',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text(
+                                  'Have a mating pair  🟡',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                value: 'have_a_mating_pair',
+                              ),
+                              DropdownMenuItem<String>(
+                                child: Text(
+                                  'Unavailable  🔴',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                value: 'unavailable',
+                              ),
+                            ],
+                            onChanged: (String? value) {
+                              setState(() {
+                                _selectedStatus = value;
+                              });
+                            },
+                            hint: Text(
+                              'Choose status',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            iconSize: 30,
+                            elevation: 16,
+                            style: TextStyle(color: Colors.deepPurple),
+                            underline: Container(
+                              height: 2,
+                              color: Colors.deepPurpleAccent,
+                            ),
+                          ),
+                          DropdownButton<String>(
+                            dropdownColor: Color(0xFFF2DEBA),
+                            value: _breed,
+                            items: _breedList.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String? value) {
+                              setState(() {
+                                _breed = value;
+                              });
+                            },
+                            hint: Text(
+                              'Choose breed 🐾',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            iconSize: 30,
+                            elevation: 16,
+                            style: TextStyle(color: Colors.deepPurple),
+                            underline: Container(
+                              height: 2,
+                              color: Colors.deepPurpleAccent,
+                            ),
+                          ),
+
+
+                        ],
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        _uploadImage();
+                      },
+                      child: Text('Add dog  🦴'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.deepPurple,
+                        onPrimary: Colors.white,
+                        textStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(height: 12,),
-              TextFormField(
-                controller: dogAgeController,
-                decoration: InputDecoration(
-                    labelText: "Age", border: OutlineInputBorder()
-                ),
-              ),
-              SizedBox(height: 12,),
-              TextFormField(
-                controller: dogGenderController,
-                decoration: InputDecoration(
-                    labelText: "Gender", border: OutlineInputBorder()
-                ),
-              ),
-              SizedBox(height: 12,),
-              TextFormField(
-                controller: dogSpeciesController,
-                decoration: InputDecoration(
-                    labelText: "Species", border: OutlineInputBorder()
-                ),
-              ),
-              SizedBox(height: 12,),
-              TextFormField(
-                controller: descriptionController,
-                minLines: 3,
-                maxLines: 5,
-                decoration: InputDecoration(
-                  labelText: "Description", border: OutlineInputBorder()
-                ),
-              ),
-              SizedBox(height: 12,),
-              //OutlinedButton(onPressed: (){}, child: Text("Submit")),
-              ElevatedButton(onPressed: (){
-                _uploadImage();
-              }, child: Text("Submit")),
-            ],
+            ),
           ),
         ),
       ),
@@ -118,6 +253,9 @@ class _UploadsImageState extends State<UploadsImage> {
       setState(() {
         imagePath = image;
         imageName = imagePath!.name.toString();
+        print("imagePath : ${imagePath}");
+        print("imageName : ${imageName}");
+        print("DateTime.now().millisecondsSinceEpoch.toString() : ${DateTime.now().millisecondsSinceEpoch.toString()}");
 
       });
     }
@@ -132,38 +270,34 @@ class _UploadsImageState extends State<UploadsImage> {
     UploadTask uploadTask = reference.putFile(File(imagePath!.path));
 
     uploadTask.snapshotEvents.listen((event) {
-      print(event.bytesTransferred.toString() + "\t" + event.totalBytes.toString());
+      print('event.bytesTransferred.toString()  + event.totalBytes.toString() : ${event.bytesTransferred.toString() + "\t" + event.totalBytes.toString()}');
 
     });
 
     await uploadTask.whenComplete(() async {
       var uploadPath = await uploadTask.snapshot.ref.getDownloadURL();
       print("this is uploadPath : ${uploadPath}");
-      // Upload image to Firebase Storage
-      //final uploadTask = storageRef.child("images/${Path.basename(imageFile.path)}").putFile(imageFile);
-      // [name, age, species, gender, description, image]
-      // Add all data to a single Map object
+
       Map<int, List<String>> myMap ;
       List<String> theDog = [
         dogNameController.text,
         dogAgeController.text,
         dogSpeciesController.text,
         dogGenderController.text,
+        addressController.text,
         descriptionController.text,
         uploadPath
       ];
       print("This is theDogList");
       print(theDog);
-      //print("this is theDog :");
-      //print(theDog);
-      // insert record inside database regarding url
+
       if(uploadPath.isNotEmpty) {
         DocumentReference docRef = await firestoreRef.collection(collectionName).doc(getCurrentUserUid());
         DocumentSnapshot docSnap = await docRef.get();
         final data = docSnap.data() as Map<dynamic, dynamic>;
-        print(data);
-        print("data.containsKey('dogName') : ${data.containsKey('dogName')}");
-        print("at first time data.containsKey('myMap') : ${data.containsKey('myMap')}");
+       // print(data);
+       // print("data.containsKey('dogName') : ${data.containsKey('dogName')}");
+       // print("at first time data.containsKey('myMap') : ${data.containsKey('myMap')}");
          if (data.containsKey('photo')) {
            // อ่านข้อมูลที่มีอยู่จาก Firestore
            DocumentSnapshot userSnapshot = await FirebaseFirestore.instance.collection('users').doc(getCurrentUserUid()).get();
@@ -171,10 +305,13 @@ class _UploadsImageState extends State<UploadsImage> {
            Map<String, dynamic> allPhoto = Map<String, dynamic>.from(userSnapshot['photo']);
            allPhoto[allPhoto.length.toString()] = {
              'dogName': dogNameController.text.toString(),
-             'dogAge': dogAgeController.text.toString(),
-             'dogSpecies': dogSpeciesController.text.toString(),
+             'dogAge': int.parse(dogAgeController.text),
+             'dogSpecies': _breed.toString(),
              'dogGender': dogGenderController.text.toString(),
              'dogDescription': descriptionController.text.toString(),
+             'dogStatus' : _selectedStatus.toString(),
+             'address' : addressController.text.toString(),
+             'Owwner' : getCurrentUserUid(),
              'image' : uploadPath
            };
 
@@ -182,6 +319,7 @@ class _UploadsImageState extends State<UploadsImage> {
                'photo' : allPhoto
              }).then((value) {
                print('Map field updated successfully!');
+               Navigator.pop(context);
              }).catchError((error) {
                print('Error updating map field: $error');
              });
@@ -192,8 +330,9 @@ class _UploadsImageState extends State<UploadsImage> {
                  '0' : {
                    'dogName' : dogNameController.text,
                    'dogAge' : dogAgeController.text,
-                   'dogSpecies' : dogSpeciesController.text,
+                   'dogSpecies': _breed.toString(),
                    'dogGender' : dogGenderController.text,
+                   'address' : addressController.toString(),
                    'dogDescription' : descriptionController.text,
                    'image' : uploadPath
                  }
@@ -204,16 +343,6 @@ class _UploadsImageState extends State<UploadsImage> {
                print('Error updating map field: $error');
              });
            }
-
-        // ทำการอัปเดตค่าใน Firestore
-        // FirebaseFirestore.instance.collection('users').doc(getCurrentUserUid()).update({
-        //   'myMap': myMap
-        // }).then((value) {
-        //   print('Map field updated successfully!');
-        // }).catchError((error) {
-        //   print('Error updating map field: $error');
-        // });
-
 
       } else {
         _showMessage("Something While Uploading Image.");

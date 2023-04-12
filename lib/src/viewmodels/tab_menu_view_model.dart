@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tindog/src/pages/home/widgets/messages.dart';
-import 'package:tindog/src/pages/home/widgets/nearme.dart';
+import 'package:tindog/src/pages/home/widgets/wtd.dart';
 
 import '../pages/home/widgets/alldog.dart';
 
@@ -22,9 +22,9 @@ class TabMenuViewModel {
       icon: FontAwesomeIcons.dog,
     ),
     TabMenu(
-      'NEARME',
-      NearMe(),
-      icon: FontAwesomeIcons.mapLocation,
+      'W.T.D.',
+      WTD(),
+      icon: FontAwesomeIcons.search,
     ),
     TabMenu(
       'MESSAGES',

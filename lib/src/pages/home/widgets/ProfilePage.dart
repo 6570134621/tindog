@@ -1,8 +1,11 @@
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tindog/src/pages/home/widgets/ProfileWidget.dart';
 import 'package:tindog/src/pages/home/widgets/button_widget.dart';
 import 'package:tindog/src/pages/home/widgets/numbers_widget.dart';
@@ -16,6 +19,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  File? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+  String? _imageURL;
   FirebaseFirestore firestoreRef = FirebaseFirestore.instance;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final uid = FirebaseAuth.instance.currentUser!.uid;
@@ -28,6 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    String somePic = 'https://cdn.pixabay.com/photo/2023/03/15/04/30/joy-7853671_1280.jpg';
     return Scaffold(
       appBar: _buildAppBar(),
       body: Column(
@@ -47,10 +54,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         const SizedBox(height: 24),
                         ProfileWidget(
-                          imagePath: 'https://cdn.pixabay.com/photo/2023/03/15/04/30/joy-7853671_1280.jpg',
+                          imagePath: data['ProfileImage'] != null ? data['ProfileImage'] : 'https://cdn.pixabay.com/animation/2022/08/09/00/46/00-46-39-186_512.gif',
                           onClicked: () {
                             Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => EditProfilePage()),
+                              MaterialPageRoute(builder: (context) => EditProfilePage(data['ProfileImage'])),
                             );
                           },
                         ),
@@ -59,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         const SizedBox(height: 24),
                         Center(child: buildbutton()),
                         const SizedBox(height: 24),
-                        NumbersWidget(),
+                        NumbersWidget(uid: data['uid'],),
                         const SizedBox(height: 48),
                         buildAbout(data['about'] == null ? 'add some detail about you' : data['about']),
                       ],
