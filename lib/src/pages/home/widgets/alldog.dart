@@ -5,8 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tindog/src/bloc/species/species_bloc.dart';
-import 'package:tindog/src/pages/home/widgets/dog_details_page.dart';
+import 'package:bangkaew/src/bloc/species/species_bloc.dart';
+import 'package:bangkaew/src/pages/home/widgets/dog_details_page.dart';
 
 class DogGrid extends StatefulWidget {
   const DogGrid({Key? key}) : super(key: key);

@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:tindog/src/constants/api.dart';
-import 'package:tindog/src/models/product.dart';
+import 'package:bangkaew/src/constants/api.dart';
+import 'package:bangkaew/src/models/product.dart';
 import 'dart:io';
-import 'package:tindog/src/models/post.dart';
+import 'package:bangkaew/src/models/post.dart';
 import 'package:http_parser/http_parser.dart';
 
 class NetworkService {

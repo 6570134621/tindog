@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tindog/src/pages/home/widgets/ProfileWidget.dart';
-import 'package:tindog/src/pages/home/widgets/another_profile.dart';
-
+import 'package:bangkaew/src/pages/home/widgets/ProfileWidget.dart';
+import 'package:bangkaew/src/pages/home/widgets/another_profile.dart';
+import 'package:bangkaew/src/config/theme.dart' as custom_theme;
 class DogDetailsPage extends StatefulWidget {
   final Map<String, dynamic> dogData;
   final String ownerUid;
@@ -47,6 +47,11 @@ class _DogDetailsPageState extends State<DogDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: custom_theme.Theme.gradient,
+          ),
+        ),
         title: Text('Dog Details'),
       ),
       body: SingleChildScrollView(

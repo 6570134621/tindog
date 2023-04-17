@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tindog/src/config/route.dart' as custom_route;
-import 'package:tindog/src/config/theme.dart' as custom_theme;
-import 'package:tindog/src/pages/login/widgets/header.dart';
-import 'package:tindog/src/pages/login/widgets/login_form.dart';
+import 'package:bangkaew/src/config/route.dart' as custom_route;
+import 'package:bangkaew/src/config/theme.dart' as custom_theme;
+import 'package:bangkaew/src/pages/login/widgets/header.dart';
+import 'package:bangkaew/src/pages/login/widgets/login_form.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

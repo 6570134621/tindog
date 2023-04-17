@@ -1,6 +1,7 @@
 import 'dart:io';
-
+import 'package:bangkaew/src/config/theme.dart' as custom_theme;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,10 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tindog/src/pages/home/get_user_name.dart';
-import 'package:tindog/src/pages/home/widgets/ProfileWidget.dart';
-import 'package:tindog/src/pages/home/widgets/textfield_widget.dart';
-import 'package:tindog/src/config/route.dart' as custom_route;
+import 'package:bangkaew/src/pages/home/get_user_name.dart';
+import 'package:bangkaew/src/pages/home/widgets/ProfileWidget.dart';
+import 'package:bangkaew/src/pages/home/widgets/textfield_widget.dart';
+import 'package:bangkaew/src/config/route.dart' as custom_route;
 class EditProfilePage extends StatefulWidget {
   final String? imageURL;
   const EditProfilePage(this.imageURL, {Key? key}) : super(key: key);
@@ -147,14 +148,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       backgroundColor: Color(0xFF6C5DD3),
       flexibleSpace: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF4A4E69),
-              Color(0xFF6C5DD3),
-            ],
-          ),
+          gradient: custom_theme.Theme.gradient,
         ),
       ),
       title: const Text(
@@ -162,8 +156,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
       actions: [
-        ElevatedButton.icon(
-        icon: FaIcon(FontAwesomeIcons.save),
+        TextButton(
         onPressed: (){
           final String name = nameController.text;
           final String email = emailController.text;
@@ -177,8 +170,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           print('tel: $tel');
           print('about: $about');
         },
-        label: Text('Save'),
-        style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF6C5DD3)),
+        child: Text('Save', style: TextStyle(fontSize: 22, color: Colors.white),),
         ),
       ],
     );
@@ -323,6 +315,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   );
 
   Future<void> _uploadImg() async {
+    // สร้าง App Check token
+
     String uploadFileName = DateTime.now().millisecondsSinceEpoch.toString() + '.jpg';
     Reference reference = StorageRef.ref().child('users').child(uploadFileName);
     UploadTask uploadTask = reference.putFile(_imageFile!);

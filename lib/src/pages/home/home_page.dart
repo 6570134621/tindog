@@ -1,15 +1,15 @@
 
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:bangkaew/src/config/theme.dart' as custom_theme;
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tindog/src/bloc/species/species_bloc.dart';
-import 'package:tindog/src/pages/home/widgets/customTabBar.dart';
-import 'package:tindog/src/pages/home/widgets/custom_drawer.dart';
-import 'package:tindog/src/viewmodels/tab_menu_view_model.dart';
+import 'package:bangkaew/src/bloc/species/species_bloc.dart';
+import 'package:bangkaew/src/pages/home/widgets/customTabBar.dart';
+import 'package:bangkaew/src/pages/home/widgets/custom_drawer.dart';
+import 'package:bangkaew/src/viewmodels/tab_menu_view_model.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -68,10 +68,15 @@ class _HomePageState extends State<HomePage> {
   }
   AppBar _buildAppBar() {
     return AppBar(
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: custom_theme.Theme.gradient,
+        ),
+      ),
       title: Expanded(
         child: Row(
           children: [
-            Text("TinDog"),
+            Text("bangkaew"),
             SizedBox(width: 50,),
             Expanded(
                 child: Container(

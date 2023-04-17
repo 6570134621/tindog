@@ -1,42 +1,33 @@
 {
   "project_info": {
-    "project_number": "381448596085",
-    "firebase_url": "https://tindog-405fa-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "tindog-405fa",
-    "storage_bucket": "tindog-405fa.appspot.com"
+    "project_number": "466189418219",
+    "project_id": "bangkaew-98c9d",
+    "storage_bucket": "bangkaew-98c9d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:381448596085:android:b7919910b828964fcca63c",
+        "mobilesdk_app_id": "1:466189418219:android:b9b952aec517c48fdc88ae",
         "android_client_info": {
-          "package_name": "com.example.tindog"
+          "package_name": "com.nithikornwarapork.bangkaew"
         }
       },
       "oauth_client": [
         {
-          "client_id": "381448596085-djuefr52gr0u7ku87p84strc29q067dk.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.tindog",
-            "certificate_hash": "1f9fc0e1dc753ccd0f3fd90958ffa9722a341a31"
-          }
-        },
-        {
-          "client_id": "381448596085-57s6krs7n6uvun18f4l8c5mf66v3nha5.apps.googleusercontent.com",
+          "client_id": "466189418219-lrn5mcba9ff229a0e1179uj8ec4qmekg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBBJesXVNe8Rem8ZVmjkCZV1dA-r69EbII"
+          "current_key": "AIzaSyD8bwbgVA0cQLo_0X8T9XjVcKSaEXgNoPg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "381448596085-57s6krs7n6uvun18f4l8c5mf66v3nha5.apps.googleusercontent.com",
+              "client_id": "466189418219-lrn5mcba9ff229a0e1179uj8ec4qmekg.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

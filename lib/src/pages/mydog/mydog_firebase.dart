@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tindog/src/pages/home/widgets/ProfileWidget.dart';
-import 'package:tindog/src/pages/home/widgets/edit_profile_page.dart';
-import 'package:tindog/src/pages/mydog/info_a_mydog.dart';
-
+import 'package:bangkaew/src/pages/home/widgets/ProfileWidget.dart';
+import 'package:bangkaew/src/pages/home/widgets/edit_profile_page.dart';
+import 'package:bangkaew/src/pages/mydog/info_a_mydog.dart';
+import 'package:bangkaew/src/config/theme.dart' as custom_theme;
 class MyDogFirebasePage extends StatefulWidget {
   const MyDogFirebasePage({super.key});
 
@@ -28,6 +28,11 @@ class _MyDogFirebasePageState extends State<MyDogFirebasePage> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Modern GridView'),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: custom_theme.Theme.gradient,
+            ),
+          ),
         ),
         body: Column(
           children: [

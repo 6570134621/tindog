@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tindog/src/pages/chats/chats_page.dart';
+import 'package:bangkaew/src/pages/chats/chats_page.dart';
 
 //class Messages extends StatelessWidget {
 import 'package:flutter/material.dart';

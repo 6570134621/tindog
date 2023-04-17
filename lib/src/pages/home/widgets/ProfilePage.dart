@@ -1,15 +1,15 @@
 
 import 'dart:io';
-
+import 'package:bangkaew/src/config/theme.dart' as custom_theme;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tindog/src/pages/home/widgets/ProfileWidget.dart';
-import 'package:tindog/src/pages/home/widgets/button_widget.dart';
-import 'package:tindog/src/pages/home/widgets/numbers_widget.dart';
-import 'package:tindog/src/pages/home/widgets/edit_profile_page.dart';
+import 'package:bangkaew/src/pages/home/widgets/ProfileWidget.dart';
+import 'package:bangkaew/src/pages/home/widgets/button_widget.dart';
+import 'package:bangkaew/src/pages/home/widgets/numbers_widget.dart';
+import 'package:bangkaew/src/pages/home/widgets/edit_profile_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -88,14 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: Color(0xFF6C5DD3),
       flexibleSpace: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF4A4E69),
-              Color(0xFF6C5DD3),
-            ],
-          ),
+          gradient: custom_theme.Theme.gradient,
         ),
       ),
       title: const Text(

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:bangkaew/src/config/theme.dart' as custom_theme;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -74,14 +74,7 @@ class _UploadsImageState extends State<UploadsImage> {
         backgroundColor: Color(0xFF3A8891),
         flexibleSpace: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF0E5E6F),
-                Color(0xFF3A8891),
-              ],
-            ),
+            gradient: custom_theme.Theme.gradient,
           ),
         ),
         title: const Text(

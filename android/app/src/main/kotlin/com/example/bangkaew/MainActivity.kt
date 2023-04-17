@@ -1,4 +1,4 @@
-package com.example.tindog
+package com.nithikornwarapork.bangkaew
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,4 +1,4 @@
-import 'package:tindog/src/config/theme.dart' as custom_theme;
+import 'package:bangkaew/src/config/theme.dart' as custom_theme;
 
 import 'package:flutter/material.dart';
 

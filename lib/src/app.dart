@@ -3,11 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tindog/src/bloc/species/species_bloc.dart';
-import 'package:tindog/src/config/route.dart' as custom_route;
-import 'package:tindog/src/constants/setting.dart';
-import 'package:tindog/src/pages/home/home_page.dart';
-import 'package:tindog/src/pages/login/login_page.dart';
+import 'package:bangkaew/src/bloc/species/species_bloc.dart';
+import 'package:bangkaew/src/config/route.dart' as custom_route;
+import 'package:bangkaew/src/constants/setting.dart';
+import 'package:bangkaew/src/pages/home/home_page.dart';
+import 'package:bangkaew/src/pages/login/login_page.dart';
 
 
 class MyApp extends StatelessWidget {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       providers: [speciesSelected],
       child: MaterialApp(
         routes: custom_route.Route.getAll(),
-        title: 'TinDog',
+        title: 'bangkaew',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,

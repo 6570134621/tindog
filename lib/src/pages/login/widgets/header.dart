@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tindog/src/constants/asset.dart';
+import 'package:bangkaew/src/constants/asset.dart';
 
 
 class Header extends StatelessWidget {
@@ -11,7 +11,7 @@ class Header extends StatelessWidget {
       //margin: EdgeInsets.only(top: 50, bottom: 35),
       child: (
         Image.asset(
-            'assets/images/logo.png',
+            'assets/images/LogoBangkaew.png',
             height: 100)
       ),
     );

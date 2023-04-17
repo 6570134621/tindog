@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tindog/src/constants/setting.dart';
-import 'package:tindog/src/config/route.dart' as custom_route;
-import 'package:tindog/src/viewmodels/menu_view_model.dart';
+import 'package:bangkaew/src/constants/setting.dart';
+import 'package:bangkaew/src/config/route.dart' as custom_route;
+import 'package:bangkaew/src/viewmodels/menu_view_model.dart';
 import 'package:badges/badges.dart' as badges;
 
 class CustomDrawer extends StatefulWidget {

@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tindog/src/config/route.dart' as custom_route;
-import 'package:tindog/src/config/theme.dart' as custom_theme;
-import 'package:tindog/src/pages/detailform/reuseableTextField.dart';
+import 'package:bangkaew/src/config/route.dart' as custom_route;
+import 'package:bangkaew/src/config/theme.dart' as custom_theme;
+import 'package:bangkaew/src/pages/detailform/reuseableTextField.dart';
 class CreateProfile extends StatefulWidget {
   @override
   _CreateProfileState createState() => _CreateProfileState();
@@ -28,15 +29,8 @@ class _CreateProfileState extends State<CreateProfile> {
         backgroundColor: Color(0xFF6C5DD3),
         flexibleSpace: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF4A4E69),
-                Color(0xFF6C5DD3),
-              ],
-            ),
-          ),
+          gradient: custom_theme.Theme.gradient,
+        ),
         ),
         title: const Text(
           "Sign Up",
@@ -58,8 +52,8 @@ class _CreateProfileState extends State<CreateProfile> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: 40,),
-                  Image.asset('assets/images/logo.png',),
+                  SizedBox(height: 15,),
+                  Image.asset('assets/images/LogoBangkaew.png',),
                   reuseableTextField('Enter Name', Icons.person, false, _nameController),
                   SizedBox(height: 20,),
                   reuseableTextField('Enter E-mail', Icons.email_outlined, false, _emailController),
@@ -74,10 +68,7 @@ class _CreateProfileState extends State<CreateProfile> {
 
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 20),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF6C5DD3),
-                      ),
+                    child: OutlinedButton(
                       onPressed: () {
                         FirebaseAuth.instance.createUserWithEmailAndPassword(
                             email: _emailController.text,
@@ -99,7 +90,7 @@ class _CreateProfileState extends State<CreateProfile> {
 
                             });
                       },
-                      child: Text('SUBMIT', style: TextStyle(fontSize: 25),),
+                      child: Text('SUBMIT', style: TextStyle(fontSize: 27, color: Colors.white),),
                     ),
                   ),
                 ],

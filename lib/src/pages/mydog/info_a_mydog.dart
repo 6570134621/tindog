@@ -1,12 +1,12 @@
 import 'dart:io';
-
+import 'package:bangkaew/src/config/theme.dart' as custom_theme;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tindog/src/pages/home/widgets/ProfileWidget.dart';
-import 'package:tindog/src/pages/home/widgets/another_profile.dart';
+import 'package:bangkaew/src/pages/home/widgets/ProfileWidget.dart';
+import 'package:bangkaew/src/pages/home/widgets/another_profile.dart';
 
 class InfoAMyDog extends StatefulWidget {
   final Map<String, dynamic> dogData;
@@ -82,8 +82,13 @@ class _InfoAMyDogState extends State<InfoAMyDog> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Dog Details'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: custom_theme.Theme.gradient,
+          ),
+        ),
         actions: [
-          ElevatedButton(
+          TextButton(
             onPressed: () async {
               await _uploadImg();
               Navigator.pop(context);
@@ -96,16 +101,7 @@ class _InfoAMyDogState extends State<InfoAMyDog> {
                 color: Colors.white,
               ),
             ),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-              ),
-              padding: MaterialStateProperty.all<EdgeInsets>(
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
-            ),
+
           ),
           SizedBox(
               width: 3), // เพิ่มระยะห่างระหว่างปุ่ม Save และขอบขวาของ AppBar

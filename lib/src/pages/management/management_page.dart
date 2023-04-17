@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tindog/src/models/product.dart';
-import 'package:tindog/src/pages/management/widgets/product_image.dart';
-import 'package:tindog/src/services/network_service.dart';
+import 'package:bangkaew/src/models/product.dart';
+import 'package:bangkaew/src/pages/management/widgets/product_image.dart';
+import 'package:bangkaew/src/services/network_service.dart';
 
 class ManagementPage extends StatefulWidget {
   @override

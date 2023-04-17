@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tindog/src/viewmodels/tab_menu_view_model.dart';
+import 'package:bangkaew/src/viewmodels/tab_menu_view_model.dart';
 
 class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
   final List<TabMenu> tabsMenu;

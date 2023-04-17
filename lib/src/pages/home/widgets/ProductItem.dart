@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tindog/src/constants/api.dart';
-import 'package:tindog/src/models/product.dart';
-import 'package:tindog/src/utils/format.dart';
-import 'package:tindog/src/widgets/image_not_found.dart';
+import 'package:bangkaew/src/constants/api.dart';
+import 'package:bangkaew/src/models/product.dart';
+import 'package:bangkaew/src/utils/format.dart';
+import 'package:bangkaew/src/widgets/image_not_found.dart';
 
 class ProductItem extends StatelessWidget {
   final double maxHeight;
