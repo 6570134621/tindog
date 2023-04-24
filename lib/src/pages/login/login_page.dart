@@ -1,13 +1,22 @@
+import 'package:bangkaew/src/pages/home/home_page.dart';
+import 'package:bangkaew/src/provider/google_sign_in.dart';
+import 'package:bangkaew/src/viewmodels/single_sign_on_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bangkaew/src/config/route.dart' as custom_route;
 import 'package:bangkaew/src/config/theme.dart' as custom_theme;
 import 'package:bangkaew/src/pages/login/widgets/header.dart';
 import 'package:bangkaew/src/pages/login/widgets/login_form.dart';
+import 'package:provider/provider.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +50,10 @@ class LoginPage extends StatelessWidget {
                         Text("Sign Up", style: Theme.of(context).textTheme.headline1,)
                         ],
                       ))],
-              )
+              ),
+                  _buildDivider(),
+                  SizedBox(height: 12),
+                  _buildSingleSignOnButton(),
             ],
           ),
         )
@@ -64,12 +76,60 @@ class LoginPage extends StatelessWidget {
                 fontWeight: FontWeight.normal),
           ));
 
-  // Row _signUpOption() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: [
-  //       const Text()
-  //     ],
-  //   )
-  // }
+  Row _buildDivider() {
+    final gradientColor = const [Colors.white10, Colors.white];
+    final line = (List<Color> colors) => Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: colors,
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          stops: [0.0, 1.0],
+        ),
+      ),
+      width: 80.0,
+      height: 1.0,
+    );
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        line(gradientColor),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Text(
+            'or',
+            style: TextStyle(
+              color: Colors.white60,
+              fontSize: 16.0,
+            ),
+          ),
+        ),
+        line(gradientColor.reversed.toList()),
+      ],
+    );
+  }
+
+  Padding _buildSingleSignOnButton() => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 22),
+    child: ElevatedButton.icon(
+      icon: FaIcon(FontAwesomeIcons.google, color: Colors.red,),
+      label: Text('Sign Up with Google'),
+      style: ElevatedButton.styleFrom(
+          primary: Colors.white,
+          onPrimary: Colors.black54,
+          minimumSize: Size(double.infinity, 50)
+      ),
+      onPressed: (){
+        AuthService().signInWithGoogle();
+        if (mounted) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_)=> HomePage())
+          );
+        }
+      },
+    )
+
+  );
 }

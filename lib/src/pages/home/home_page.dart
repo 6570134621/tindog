@@ -73,44 +73,27 @@ class _HomePageState extends State<HomePage> {
           gradient: custom_theme.Theme.gradient,
         ),
       ),
-      title: Expanded(
-        child: Row(
-          children: [
-            Text("bangkaew"),
-            SizedBox(width: 50,),
-            Expanded(
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  decoration: BoxDecoration(
-                    border:  Border.all(width: 0, color: Colors.transparent)
-                  ),
-                  child: DropdownSearch(
-                    dropdownDecoratorProps: DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        labelText: 'Enter species',
-                        labelStyle: TextStyle(
-                          color: Colors.white
-                        ),
-                      ),
-
-                    ),
-                    items: _breedList,
-                    onChanged: (value) {
-                      context.read<SpeciesBloc>().add(SpeciesSelected(value!));
-                    },
-                    selectedItem: "All",
-                    validator: (String? item) {
-                      if (item == null)
-                        return "Required field";
-                      else
-                        return null;
-                    },
-                  ),
-                )
+      title: DropdownSearch(
+        dropdownDecoratorProps: DropDownDecoratorProps(
+          dropdownSearchDecoration: InputDecoration(
+            labelText: 'Enter species',
+            labelStyle: TextStyle(
+                color: Colors.white
             ),
+          ),
 
-          ],
         ),
+        items: _breedList,
+        onChanged: (value) {
+          context.read<SpeciesBloc>().add(SpeciesSelected(value!));
+        },
+        selectedItem: "All",
+        validator: (String? item) {
+          if (item == null)
+            return "Required field";
+          else
+            return null;
+        },
       ),
       bottom: CustomTabBar(_tabsMenu),
       actions: [

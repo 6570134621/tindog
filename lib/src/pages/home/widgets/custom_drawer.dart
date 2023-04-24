@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bangkaew/src/constants/setting.dart';
 import 'package:bangkaew/src/config/route.dart' as custom_route;
@@ -21,6 +22,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
   User? user = FirebaseAuth.instance.currentUser;
   String collectionName = "users";
   List<String> docIDs = [];
+
+  Future<void> logout() async {
+    final GoogleSignIn googleSign = GoogleSignIn();
+    await googleSign.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -136,7 +143,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 'Yes !!',
                 style: TextStyle(color: Colors.deepOrange),
               ),
-              onPressed: () {
+              onPressed: () async {
                 FirebaseAuth.instance.signOut().then((value) {
                   print("Signed Out");
                   SharedPreferences.getInstance()
@@ -145,6 +152,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   Navigator.pushNamedAndRemoveUntil(
                       context, custom_route.Route.login, (route) => false);
                 });
+                // await logout();
                 // Dismiss alert dialog
               },
             ),
