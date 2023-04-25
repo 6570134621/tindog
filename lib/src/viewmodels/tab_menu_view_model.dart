@@ -1,4 +1,5 @@
 
+import 'package:bangkaew/src/chat/chat.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bangkaew/src/pages/home/widgets/messages.dart';
@@ -28,7 +29,7 @@ class TabMenuViewModel {
     ),
     TabMenu(
       'MESSAGES',
-      Messages(),
+      Chat(),
       icon: FontAwesomeIcons.message,
     ),
 

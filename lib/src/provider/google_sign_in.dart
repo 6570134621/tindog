@@ -31,9 +31,12 @@ class AuthService {
       'Name' : gUser.displayName,
       'Email' : gUser.email,
       'Tel' : 'No data',
+      'ProfileImage' : gUser.photoUrl,
       'Job' : 'No data',
       'Age' : '0',
       'uid' : uid,
+      'about' : "Add something about you",
+      'date_time': DateTime.now(),
       'photo' : {},
     });
     return await FirebaseAuth.instance.signInWithCredential(credential);

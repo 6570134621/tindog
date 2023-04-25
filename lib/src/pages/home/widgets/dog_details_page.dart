@@ -1,3 +1,4 @@
+import 'package:bangkaew/src/chat/chatpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -261,8 +262,7 @@ class _DogDetailsPageState extends State<DogDetailsPage> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       anotherProfile(
-                                                    ownerUid: data[
-                                                        'uid'], // แทนที่ด้วย uid ของเจ้าของจริง
+                                                    ownerUid: data['uid'], // แทนที่ด้วย uid ของเจ้าของจริง
                                                   ),
                                                 ),
                                               );
@@ -272,7 +272,16 @@ class _DogDetailsPageState extends State<DogDetailsPage> {
                                           SizedBox(width: 8),
                                           ElevatedButton(
                                             onPressed: () {
-                                              // ไปยังช่องแชทของเจ้าของสุนัข
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ChatPage(
+                                                        id: data['uid'],
+                                                        name: data['Name'],
+                                                      )
+                                                ),
+                                              );
                                             },
                                             child: Text('Chat'),
                                           ),

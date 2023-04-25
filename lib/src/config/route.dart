@@ -1,4 +1,5 @@
 
+import 'package:bangkaew/src/chat/chat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bangkaew/src/pages/chats/chats_page.dart';
 import 'package:bangkaew/src/pages/detailform/detail_form.dart';
@@ -36,7 +37,7 @@ class Route{
     login : (context) => LoginPage(),
     mydog : (context) => AllDog(),
     profile : (context) => ProfilePage(),
-    chats : (context) => Messages(),
+    chats : (context) => Chat(),
     management : (context) => ManagementPage(),
     detailform : (context) => CreateProfile(),
     uploadimage : (context) => UploadsImage(),

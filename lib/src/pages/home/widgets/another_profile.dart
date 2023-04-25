@@ -1,3 +1,4 @@
+import 'package:bangkaew/src/chat/chatpage.dart';
 import 'package:bangkaew/src/config/theme.dart' as custom_theme;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -49,17 +50,38 @@ class _anotherProfileState extends State<anotherProfile> {
                         children: [
                           const SizedBox(height: 24),
                           ProfileWidgetForSomeone(
-                            imagePath: 'https://cdn.pixabay.com/photo/2023/03/15/04/30/joy-7853671_1280.jpg',
+                            imagePath: data['ProfileImage'],
                             onClicked: () {
-                              // Navigator.of(context).push(
-                              //   MaterialPageRoute(builder: (context) => EditProfilePage()),
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ChatPage(
+                                          id: data['uid'],
+                                          name: data['Name'],
+                                        )
+                                ),
+                              );
                             },
                           ),
                           const SizedBox(height: 24),
                           buildName(data['Name'], data['Email']),
                           const SizedBox(height: 24),
-                          Center(child: buildbutton()),
+                          Center(child: ButtonWidget(
+                            text: 'Message',
+                            onClicked: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ChatPage(
+                                          id: data['uid'],
+                                          name: data['Name'],
+                                        )
+                                ),
+                              );
+                            },
+                          )),
                           const SizedBox(height: 24),
                           NumbersWidget(uid : widget.ownerUid),
                           const SizedBox(height: 48),
@@ -107,10 +129,7 @@ class _anotherProfileState extends State<anotherProfile> {
     ],
   );
 
-  Widget buildbutton() => ButtonWidget(
-    text: 'Message',
-    onClicked: (){},
-  );
+
 
   Widget buildAbout(String detail) => Container(
     padding: EdgeInsets.symmetric(horizontal: 48),

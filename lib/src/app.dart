@@ -28,9 +28,9 @@ class MyApp extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
             textTheme: TextTheme(
               headline1: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
-            )
+            ),
           ),
-
+          debugShowCheckedModeBanner: false,
           // home: HomePage(),
           home: FutureBuilder<DocumentSnapshot<Object?>>(
             future: FirebaseFirestore.instance.collection('users')

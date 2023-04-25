@@ -82,6 +82,7 @@ class _CreateProfileState extends State<CreateProfile> {
                                 'Job' : _jobController.text,
                                 'Age' : _ageController.text,
                                 'uid' : uid,
+                                'date_time': DateTime.now(),
                                 'photo' : {},
                               }).then((value) {
                                 print("create account");
