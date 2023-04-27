@@ -1,12 +1,14 @@
 import 'package:bangkaew/src/pages/home/home_page.dart';
 import 'package:bangkaew/src/provider/google_sign_in.dart';
 import 'package:bangkaew/src/viewmodels/single_sign_on_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bangkaew/src/config/route.dart' as custom_route;
 import 'package:bangkaew/src/config/theme.dart' as custom_theme;
 import 'package:bangkaew/src/pages/login/widgets/header.dart';
 import 'package:bangkaew/src/pages/login/widgets/login_form.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -120,14 +122,32 @@ class _LoginPageState extends State<LoginPage> {
           onPrimary: Colors.black54,
           minimumSize: Size(double.infinity, 50)
       ),
-      onPressed: (){
-        AuthService().signInWithGoogle();
-        if (mounted) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_)=> HomePage())
+      // onPressed: (){
+      //   AuthService().signInWithGoogle();
+      //   if (mounted) {
+      //     Navigator.push(
+      //         context,
+      //         MaterialPageRoute(builder: (_)=> HomePage())
+      //     );
+      //   }
+      // },
+      onPressed: () async {
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signInSilently();
+        if (googleUser != null) {
+          final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+          final AuthCredential credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
           );
+          await FirebaseAuth.instance.signInWithCredential(credential);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => HomePage()),
+          );
+        } else {
+          AuthService().signInWithGoogle();
         }
+
       },
     )
 

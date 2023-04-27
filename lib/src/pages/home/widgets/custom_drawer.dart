@@ -144,7 +144,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 style: TextStyle(color: Colors.deepOrange),
               ),
               onPressed: () async {
-                FirebaseAuth.instance.signOut().then((value) {
+                await FirebaseAuth.instance.signOut().then((value) {
                   print("Signed Out");
                   SharedPreferences.getInstance()
                       .then((value) => value.remove(Setting.TOKEN_PREF));

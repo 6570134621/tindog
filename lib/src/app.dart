@@ -31,20 +31,36 @@ class MyApp extends StatelessWidget {
             ),
           ),
           debugShowCheckedModeBanner: false,
-          // home: HomePage(),
-          home: FutureBuilder<DocumentSnapshot<Object?>>(
-            future: FirebaseFirestore.instance.collection('users')
-                .doc(user?.uid)
-                .get(),
-            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData && snapshot.data?.data() != null) {
-                  return HomePage();
-                } else {
+
+          // home: FutureBuilder<DocumentSnapshot<Object?>>(
+          //   future: FirebaseFirestore.instance.collection('users')
+          //       .doc(user?.uid)
+          //       .get(),
+          //   builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          //     if (snapshot.connectionState == ConnectionState.done) {
+          //       if (snapshot.hasData && snapshot.data?.data() != null) {
+          //         return HomePage();
+          //       } else {
+          //         return LoginPage();
+          //       }
+          //     }
+          //     return SizedBox();
+          //   },
+          // ),
+
+          home: StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                final User? user = snapshot.data;
+                if (user == null) {
                   return LoginPage();
                 }
+                return HomePage();
               }
-              return SizedBox();
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             },
           ),
         ),
@@ -52,3 +68,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+// สามารถใช้ FirebaseAuth.instance.authStateChanges()
+// เพื่อตรวจสอบสถานะการเข้าสู่ระบบของผู้ใช้งานทั้งหมดโดยไม่ต้องกำหนดว่าใช้
+// email/password หรือ Google Sign-In
